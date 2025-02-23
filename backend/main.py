@@ -20,6 +20,7 @@ class Purchase(BaseModel):
 
 @app.post("/purchase/", response_model=Purchase)
 async def add_purchase(purchase: Purchase):
+    # Check empty fields
     if not purchase.customer_name:
         raise HTTPException(status_code=422, detail="Customer name cannot be empty")
     if not purchase.country:
@@ -41,6 +42,15 @@ async def add_bulk_purchases(file: UploadFile = File(...)):
     new_purchases = []
     for row in reader:
         try:
+            # Check empty fields in each row
+            if not row["customer_name"]:
+                raise HTTPException(status_code=422, detail="Customer name cannot be empty")
+            if not row["country"]:
+                raise HTTPException(status_code=422, detail="Country cannot be empty")
+            if not row["purchase_date"]:
+                raise HTTPException(status_code=422, detail="Purchase date cannot be empty")
+            if not row["amount"] or float(row["amount"]) < 0:
+                raise HTTPException(status_code=422, detail="Amount cannot be empty or negative")
             purchase = Purchase(
                 customer_name=row["customer_name"],
                 country=row["country"],
