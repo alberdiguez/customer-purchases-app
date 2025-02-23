@@ -70,12 +70,21 @@ with tab2:
         response = requests.get("http://127.0.0.1:8000/purchases/", params=params)
         # Check API response
         if response.status_code == 200:
-            purchases = response.json()
+            result = response.json()
+            purchases = result.get("purchases", [])
+            kpis = result.get("kpis", None)
             # Display purchases if any match the given criteria
             if purchases:
                 df = pd.DataFrame(purchases)
                 st.dataframe(df)  # Show the DataFrame in Streamlit
             else:
                 st.write("No purchases found for the given criteria")
+            # Display KPIs
+            if kpis:
+                st.subheader("KPIs")
+                st.write(f"**Mean Purchases per Client:** {kpis['avg_purchases_per_client']:.2f}")
+                st.write("**Clients per Country**")
+                for country, count in kpis['clients_per_country'].items():
+                    st.write(f"{country}: {count} client(s)")
         else:
             st.error("Error retrieving purchases.")

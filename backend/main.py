@@ -5,6 +5,7 @@ from datetime import date
 from typing import Optional, List
 import io
 import csv
+from collections import defaultdict
 
 app = FastAPI(title="Customer Purchases API")
 
@@ -44,7 +45,7 @@ async def add_bulk_purchases(file: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail=f"Error processing row: {row} - {e}")
     return JSONResponse(content={"added": len(new_purchases)})
 
-@app.get("/purchases/", response_model=List[Purchase])
+@app.get("/purchases/", response_model=dict)
 def get_purchases(country: Optional[str] = None, start_date: Optional[date] = None, end_date: Optional[date] = None):
     filtered = purchases
     if country:
@@ -53,4 +54,27 @@ def get_purchases(country: Optional[str] = None, start_date: Optional[date] = No
         filtered = [p for p in filtered if p.purchase_date >= start_date]
     if end_date:
         filtered = [p for p in filtered if p.purchase_date <= end_date]
-    return filtered
+
+    # If no filters are matched, returns empty list and None for KPIs
+    if not filtered:
+        return {"purchases": [], "kpis": None}
+
+    # Mean purchases per client
+    custSpending = defaultdict(float)
+    for p in filtered:
+        custSpending[p.customer_name] += p.amount
+    mean = sum(custSpending.values()) / len(custSpending)
+
+    # Number of clients per country
+    custPerCountry = defaultdict(set)
+    for p in filtered:
+        custPerCountry[p.country].add(p.customer_name)
+    custPerCountry = {country: len(clients) for country, clients in custPerCountry.items()}
+
+    return {
+        "purchases": filtered,
+        "kpis": {
+            "avg_purchases_per_client": mean,
+            "clients_per_country": custPerCountry
+        }
+    }
