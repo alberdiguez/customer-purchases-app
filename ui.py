@@ -104,8 +104,8 @@ with tab2:
             # Display KPIs if avaliable
             if kpis:
                 st.header("KPIs")
-                st.subheader(f":blue-background[**Mean Purchases per Client:**] {kpis['avg_purchases_per_client']:.2f}")
-                st.subheader(":blue-background[**Clients per Country**]")
+                st.subheader(f":red-background[**Mean Purchases per Client:**] {kpis['avg_purchases_per_client']:.2f}")
+                st.subheader(":red-background[**Clients per Country**]")
                 # Prepare data for clients per country
                 clients_per_country = kpis['clients_per_country']
                 # Create dataframe for clients_per_country KPI
