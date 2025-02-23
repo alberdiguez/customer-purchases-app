@@ -3,7 +3,7 @@ import httpx
 import tempfile
 import os
 
-url_api = "http://127.0.0.1:8000"
+url_api = "http://backend:8000"
 
 # Test if API is running
 def test_api_running():

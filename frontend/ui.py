@@ -29,7 +29,7 @@ with tab1:
         }
 
         # Send POST request to /purchase/
-        response = requests.post("http://127.0.0.1:8000/purchase/", json=purchase_data)
+        response = requests.post("http://backend:8000/purchase/", json=purchase_data)
 
         # Check API response
         if response.status_code == 200:
@@ -47,7 +47,7 @@ with tab1:
             # Need to specify file name, content, and type
             file = {'file': (uploaded_file.name, uploaded_file, "text/csv")}
             # Send POST request to /purchase/bulk/
-            response = requests.post("http://127.0.0.1:8000/purchase/bulk/", files = file)
+            response = requests.post("http://backend:8000/purchase/bulk/", files = file)
             # Check API response
             if response.status_code == 200:
                 st.success("Multiple purchases added successfully!")
@@ -79,7 +79,7 @@ with tab2:
         if end_date_filter:
             params["end_date"] = end_date_filter.isoformat()
         # Make GET request to /purchases/
-        response = requests.get("http://127.0.0.1:8000/purchases/", params=params)
+        response = requests.get("http://backend:8000/purchases/", params=params)
         # Check API response
         if response.status_code == 200:
             # Parse the JSON response

@@ -1,73 +1,62 @@
 # Customer Purchases API & Streamlit App
 
-## Overview
+## Project Description
 
-Build a system with two main components:
+This project consists of a FastAPI-based backend for managing customer purchases and a Streamlit frontend to interact with it. Both containerized using docker.
 
-1. **Backend (FastAPI)**  
-   - Manage customer purchase data in-memory.
-   - Endpoints to:
-     - Add a single purchase (`/purchase/`).
-     - Bulk upload purchases from a CSV (`/purchase/bulk/`).
-     - Retrieve filtered purchase data (by date and country).
-     - Compute KPIs (mean purchases per client, clients per country, and optionally, forecast sales).
+## Features
 
-2. **Frontend (Streamlit)**  
-   - Create a simple UI with two tabs:
-     - **Upload Tab**: Form for a single purchase entry and CSV file upload.
-     - **Analyse Tab**: Filter (by date and country) and display KPIs from the API.
+### **Backend (FastAPI)**
 
-3. **Dockerization**  
-   - Containerize both the FastAPI and Streamlit applications.
-   - Provide clear instructions to run them locally.
+- Stores purchase data in-memory.
+- Provides endpoints to:
+  - Add a single purchase (`POST /purchase/`).
+  - Upload multiple purchases via CSV (`POST /purchase/bulk/`).
+  - Retrieve purchases filtered by date and country (`GET /purchases/`).
+  - Compute KPIs:
+    - Average purchases per client.
+    - Clients per country.
 
-## Requirements
+### **Frontend (Streamlit)**
 
-- Use the provided repository as your starting point:
-  - **FastAPI code:** located at `fastapi/main.py`
-  - **Sample CSV file:** `sample_purchase.csv` (CSV format only)
-- Data should be stored in-memory.
-- Document your work in a custom README (this file should be replaced with your own version).
-- Use Git with regular, small commits (feature branches recommended).
-- Write unit tests for key backend functionality.
-- **Deadline:** Complete and submit your GitHub repository link within one week.
+- User-friendly interface with two tabs:
+  - Upload Tab: Allows users to add purchases manually or upload a CSV file.
+  - Analysis Tab: Filters purchases by country and date range. Displays KPIs.
 
-## Evaluation Criteria
+### **Dockerization**
+- Both the backend and frontend are containerized.
+- A `docker-compose.yml` file is provided for easy setup.
 
-- **Code Quality:** Clean, modular, and well-commented code.
-- **Documentation:** A clear README explaining:
-  - The system architecture.
-  - Setup and running instructions.
-  - Design decisions and any trade-offs.
-- **Testing:** Adequate unit tests for backend endpoints.
-- **Version Control:** Frequent commits and proper branching.
-- **Dockerization:** Successful containerization with clear local run instructions.
+## Installation
 
-## Getting Started
+### **Requirements**
 
-1. **Clone the Repository:**  
-   `git clone https://github.com/merck-test/software-developer-test.git`
+- [**Docker**](https://www.docker.com/products/docker-desktop/) installed in your system.
 
-2. **Backend:**  
-   - Review and enhance the FastAPI code in `fastapi/main.py`.
+### **Run the application**
 
-3. **Frontend:**  
-   - Build a Streamlit app to interact with the FastAPI endpoints.
+1. **Clone this repository:**
+   `git clone https://github.com/alberdiguez/customer-purchases-app`
 
-4. **Docker:**  
-   - Create Dockerfiles for both the FastAPI and Streamlit applications.
-   - Provide instructions to build and run the containers.
+2. **Build and start the app:**
+   ```bash
+   docker-compose up --build test
+   ```
 
-5. **Testing & Documentation:**  
-   - Write unit tests for backend functionality.
-   - Update this README with your explanations and setup instructions.
+3. **Access the frontend at:** 
+   http://localhost:8501/
 
-## Submission
+4. **The backend API is available at:** 
+   http://localhost:8000/docs
 
-Submit your GitHub repository link once completed. Ensure your repo includes:
-- Your updated README.
-- Enhanced FastAPI and Streamlit code.
-- Dockerfiles and clear run instructions.
-- Unit tests for the backend.
+###**Unit Testing**
+- Unit tests are implemented to ensure the functionality of the backend API endpoints. They verify that the API behaves as expected for various scenarios, including valid and invalid inputs.
+- **Run Unit Tests:** 
+   To run unit testing, execute the following command:
+   ```bash
+   docker-compose up --build test
+   ```
 
-Good luck and happy coding!
+Sample purchases CSV included for an easier testing.
+
+Thank you!
