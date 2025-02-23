@@ -31,16 +31,16 @@ This project consists of a FastAPI-based backend for managing customer purchases
 
 ### **Requirements**
 
-- [**Docker**](https://www.docker.com/products/docker-desktop/) installed in your system.
+- [**Docker Desktop**](https://www.docker.com/products/docker-desktop/) installed in your system.
 
 ### **Run the application**
 
 1. **Clone this repository:**
-   `git clone https://github.com/alberdiguez/customer-purchases-app`
+   `git clone https://github.com/alberdiguez/customer-purchases-app.git`
 
 2. **Build and start the app:**
    ```bash
-   docker-compose up --build test
+   docker-compose up --build
    ```
 
 3. **Access the frontend at:** 
