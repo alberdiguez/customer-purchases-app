@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import pandas as pd
 
 st.title("Customer Purchases App")
 
@@ -9,16 +10,18 @@ tab1, tab2 = st.tabs(["Upload Purchases", "Analyse Purchases"])
 with tab1:
     # Add single Purchase form
     st.header("Add Purchase")
-    customer_name = st.text_input("Customer Name")
-    country = st.text_input("Country")
+    customer_name = st.text_input("Customer Name", placeholder="Please enter a customer name")
+    country = st.text_input("Country", placeholder="Please enter a country")
     purchase_date = st.date_input("Purchase Date")
     amount = st.number_input("Amount", min_value=0.0)
-    if (st.button("Add Purchase")):
+    # Check if any field is empty
+    disable_button = not (customer_name and country and purchase_date and amount)
+    if st.button("Add Purchase", disabled=disable_button, help="All fields must be filled"):
         # Create dictionary to hold purchase details
         purchase_data = {
             'customer_name': customer_name,
             'country': country,
-            'purchase_date': purchase_date,
+            'purchase_date': purchase_date.isoformat(),
             'amount': amount        
         }
         # Send POST request to /purchase/
@@ -34,14 +37,17 @@ with tab1:
     uploaded_file = st.file_uploader("Please select a CSV file", type='csv')
     if st.button("Upload"):
         if uploaded_file is not None:
-            file = {'file': uploaded_file}
+            # Need to specify file name, content, and type
+            file = {'file': (uploaded_file.name, uploaded_file, "text/csv")}
             # Send POST request to /purchase/bulk/
-            resposne = requests.post("http://127.0.0.1:8000/purchase/bulk/", files = file)
+            response = requests.post("http://127.0.0.1:8000/purchase/bulk/", files = file)
             # Check API response
-            if resposne.status_code == 200:
+            if response.status_code == 200:
                 st.success("Multiple purchases added successfully!")
             else:
                 st.error("Error uploading purchases.")
+        else:
+            st.error("Please select a file.")
 
 with tab2:
     st.header("View Purchases")
@@ -67,7 +73,8 @@ with tab2:
             purchases = response.json()
             # Display purchases if any match the given criteria
             if purchases:
-                st.write(purchases)
+                df = pd.DataFrame(purchases)
+                st.dataframe(df)  # Show the DataFrame in Streamlit
             else:
                 st.write("No purchases found for the given criteria")
         else:
