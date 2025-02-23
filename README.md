@@ -36,7 +36,9 @@ This project consists of a FastAPI-based backend for managing customer purchases
 ### **Run the application**
 
 1. **Clone this repository:**
-   `git clone https://github.com/alberdiguez/customer-purchases-app.git`
+   ```bash
+   git clone https://github.com/alberdiguez/customer-purchases-app.git
+   ```
 
 2. **Build and start the app:**
    ```bash
