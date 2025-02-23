@@ -49,13 +49,16 @@ This project consists of a FastAPI-based backend for managing customer purchases
 4. **The backend API is available at:** 
    http://localhost:8000/docs
 
-###**Unit Testing**
+### **Unit Testing**
+
 - Unit tests are implemented to ensure the functionality of the backend API endpoints. They verify that the API behaves as expected for various scenarios, including valid and invalid inputs.
 - **Run Unit Tests:** 
    To run unit testing, execute the following command:
    ```bash
    docker-compose up --build test
    ```
+
+## **THE END**
 
 Sample purchases CSV included for an easier testing.
 
