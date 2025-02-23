@@ -31,3 +31,25 @@ def test_add_purchase():
     assert response_data["customer_name"] == purchase_data["customer_name"]
     assert response_data["country"] == purchase_data["country"]
     assert response_data["amount"] == purchase_data["amount"]
+
+def test_bulk_upload_purchases():
+    # Prepare test data for bulk upload
+    bulk_data = """customer_name,country,purchase_date,amount
+Paula Vera,Spain,2024-02-20,550.0
+Victoria,France,2025-02-21,150.0
+"""
+
+    # Create a temporary CSV file
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_csv:
+        temp_csv.write(bulk_data.encode('utf-8'))
+        temp_csv_path = temp_csv.name
+
+    # Send POST request to /purchase/bulk/ endpoint with temporary CSV file
+    with open(temp_csv_path, 'rb') as f:
+        response = httpx.post(f"{url_api}/purchase/bulk/", files={"file": (temp_csv_path, f, "text/csv")})
+
+    # Verify succesful response
+    assert response.status_code == 200
+
+    # Clean up the temporary file
+    os.remove(temp_csv_path)
