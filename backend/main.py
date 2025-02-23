@@ -20,6 +20,14 @@ class Purchase(BaseModel):
 
 @app.post("/purchase/", response_model=Purchase)
 async def add_purchase(purchase: Purchase):
+    if not purchase.customer_name:
+        raise HTTPException(status_code=422, detail="Customer name cannot be empty")
+    if not purchase.country:
+        raise HTTPException(status_code=422, detail="Country cannot be empty")
+    if not purchase.purchase_date:
+        raise HTTPException(status_code=422, detail="Purchase date cannot be empty")
+    if purchase.amount is None or purchase.amount < 0:
+        raise HTTPException(status_code=422, detail="Amount cannot be empty or negative")
     purchases.append(purchase)
     return purchase
 
